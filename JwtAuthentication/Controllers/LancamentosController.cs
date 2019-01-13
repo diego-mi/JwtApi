@@ -26,6 +26,7 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Lancamentos
         [HttpGet]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Lancamento> GetLancamentos()
         {
@@ -34,6 +35,7 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Lancamentos/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -56,6 +58,7 @@ namespace JwtAuthentication.Controllers
 
         // PUT: api/Lancamentos/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 204)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -95,6 +98,7 @@ namespace JwtAuthentication.Controllers
 
         // POST: api/Lancamentos
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 201)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -114,6 +118,7 @@ namespace JwtAuthentication.Controllers
 
         // DELETE: api/Lancamentos/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
