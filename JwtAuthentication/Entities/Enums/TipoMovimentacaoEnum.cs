@@ -2,6 +2,7 @@
 
 namespace JwtAuthentication.Entities.Enums
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TipoMovimentacaoEnum
     {
         [EnumMember(Value = "0")]

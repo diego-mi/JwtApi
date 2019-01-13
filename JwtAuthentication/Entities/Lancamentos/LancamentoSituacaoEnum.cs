@@ -2,6 +2,7 @@
 
 namespace JwtAuthentication.Entities.Lancamentos
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum LancamentoSituacaoEnum
     {
         [EnumMember(Value = "0")]

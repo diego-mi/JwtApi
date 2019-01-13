@@ -153,7 +153,7 @@ namespace JwtAuthentication.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IActionResult GetCategoriaGrupos()
         {
-            return Ok(_categoriasService.GetGrupos());
+            return Ok(_categoriasService.GetGruposEnum());
         }
     }
 }
