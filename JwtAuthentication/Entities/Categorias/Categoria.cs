@@ -18,6 +18,6 @@ namespace JwtAuthentication.Entities.Categorias
 
         public string AutorId { get; set; }
 
-        public ApplicationUser Autor { get; set; }
+        public virtual ApplicationUser Autor { get; set; }
     }
 }

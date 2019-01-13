@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using JwtAuthentication.Entities;
 using JwtAuthentication.ViewModels.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace JwtAuthentication.Controllers
 {
     [Route("api/v1/auth")]
+    [Authorize]
     public class AuthController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
