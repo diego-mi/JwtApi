@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Lancamentos;
+using JwtAuthentication.Services;
 
 namespace JwtAuthentication.Controllers
 {
@@ -15,14 +16,17 @@ namespace JwtAuthentication.Controllers
     public class LancamentosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly TagueamentoService _tagueamentoService;
 
-        public LancamentosController(ApplicationDbContext context)
+        public LancamentosController(ApplicationDbContext context, TagueamentoService tagueamentoService)
         {
             _context = context;
+            _tagueamentoService = tagueamentoService;
         }
 
         // GET: api/Lancamentos
         [HttpGet]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Lancamento> GetLancamentos()
         {
             return _context.Lancamentos;
@@ -30,6 +34,9 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Lancamentos/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> GetLancamento([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -49,6 +56,9 @@ namespace JwtAuthentication.Controllers
 
         // PUT: api/Lancamentos/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PutLancamento([FromRoute] int id, [FromBody] Lancamento lancamento)
         {
             if (!ModelState.IsValid)
@@ -65,6 +75,7 @@ namespace JwtAuthentication.Controllers
 
             try
             {
+                _tagueamentoService.Taguear(lancamento);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -84,6 +95,9 @@ namespace JwtAuthentication.Controllers
 
         // POST: api/Lancamentos
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PostLancamento([FromBody] Lancamento lancamento)
         {
             if (!ModelState.IsValid)
@@ -92,6 +106,7 @@ namespace JwtAuthentication.Controllers
             }
 
             _context.Lancamentos.Add(lancamento);
+            _tagueamentoService.Taguear(lancamento);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLancamento", new { id = lancamento.Id }, lancamento);
@@ -99,6 +114,9 @@ namespace JwtAuthentication.Controllers
 
         // DELETE: api/Lancamentos/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> DeleteLancamento([FromRoute] int id)
         {
             if (!ModelState.IsValid)

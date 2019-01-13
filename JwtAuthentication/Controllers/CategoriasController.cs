@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Categorias;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JwtAuthentication.Controllers
 {
     [Route("api/v1/categorias")]
+    [Authorize]
     [ApiController]
     public class CategoriasController : ControllerBase
     {
@@ -21,6 +23,7 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Categorias
         [HttpGet]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Categoria> GetCategorias()
         {
             return _context.Categorias;
@@ -28,6 +31,9 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> GetCategoria([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -47,6 +53,9 @@ namespace JwtAuthentication.Controllers
 
         // PUT: api/Categorias/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PutCategoria([FromRoute] int id, [FromBody] Categoria categoria)
         {
             if (!ModelState.IsValid)
@@ -82,6 +91,9 @@ namespace JwtAuthentication.Controllers
 
         // POST: api/Categorias
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PostCategoria([FromBody] Categoria categoria)
         {
             if (!ModelState.IsValid)
@@ -97,6 +109,9 @@ namespace JwtAuthentication.Controllers
 
         // DELETE: api/Categorias/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> DeleteCategoria([FromRoute] int id)
         {
             if (!ModelState.IsValid)

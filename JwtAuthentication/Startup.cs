@@ -78,6 +78,16 @@ namespace JwtAuthentication
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.AddSecurityDefinition(
+                    "bearer",
+                    new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Autenticação baseada em Json Web Token (JWT)",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    }
+                );
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

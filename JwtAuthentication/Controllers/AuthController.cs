@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace JwtAuthentication.Controllers
 {
     [Route("api/v1/auth")]
-    [Authorize]
+    [AllowAnonymous]
     public class AuthController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

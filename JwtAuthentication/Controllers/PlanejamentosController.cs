@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Planejamentos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JwtAuthentication.Controllers
 {
     [Route("api/v1/planejamentos")]
     [ApiController]
+    [Authorize]
     public class PlanejamentosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -21,6 +23,7 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Planejamentos
         [HttpGet]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Planejamento> GetPlanejamentos()
         {
             return _context.Planejamentos;
@@ -28,6 +31,9 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Planejamentos/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> GetPlanejamento([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -47,6 +53,9 @@ namespace JwtAuthentication.Controllers
 
         // PUT: api/Planejamentos/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PutPlanejamento([FromRoute] int id, [FromBody] Planejamento planejamento)
         {
             if (!ModelState.IsValid)
@@ -82,6 +91,9 @@ namespace JwtAuthentication.Controllers
 
         // POST: api/Planejamentos
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PostPlanejamento([FromBody] Planejamento planejamento)
         {
             if (!ModelState.IsValid)
@@ -97,6 +109,9 @@ namespace JwtAuthentication.Controllers
 
         // DELETE: api/Planejamentos/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> DeletePlanejamento([FromRoute] int id)
         {
             if (!ModelState.IsValid)
