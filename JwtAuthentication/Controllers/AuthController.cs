@@ -53,9 +53,6 @@ namespace JwtAuthentication.Controllers
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var claim = new[] {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
-                };
                 var signinKey = new SymmetricSecurityKey(
                   Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
@@ -71,15 +68,11 @@ namespace JwtAuthentication.Controllers
                 return Ok(
                   new
                   {
-                      token = new JwtSecurityTokenHandler().WriteToken(token),
-                      tokenType = "Bearer",
-                      user = new {
-                          id = user.Id,
-                          Name = user.Name,
-                          Email = user.Email,
-                          Thumbnail = user.Thumbnail
-                      }, 
-                      expiration = token.ValidTo
+                      id = user.Id,
+                      username = user.UserName,
+                      email = user.Email,
+                      Thumbnail = user.Thumbnail,
+                      token = "Bearer" + new JwtSecurityTokenHandler().WriteToken(token)
                   });
             }
             return Unauthorized();
