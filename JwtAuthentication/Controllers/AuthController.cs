@@ -72,6 +72,13 @@ namespace JwtAuthentication.Controllers
                   new
                   {
                       token = new JwtSecurityTokenHandler().WriteToken(token),
+                      tokenType = "Bearer",
+                      user = new {
+                          id = user.Id,
+                          Name = user.Name,
+                          Email = user.Email,
+                          Thumbnail = user.Thumbnail
+                      }, 
                       expiration = token.ValidTo
                   });
             }

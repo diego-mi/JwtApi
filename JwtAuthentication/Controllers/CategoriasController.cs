@@ -23,6 +23,8 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Categorias
         [HttpGet]
+        [Authorize]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Categoria> GetCategorias()
         {
@@ -31,6 +33,7 @@ namespace JwtAuthentication.Controllers
 
         // GET: api/Categorias/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -45,7 +48,7 @@ namespace JwtAuthentication.Controllers
 
             if (categoria == null)
             {
-                return NotFound();
+                return NotFound("Categoria não encontrada");
             }
 
             return Ok(categoria);
@@ -53,6 +56,7 @@ namespace JwtAuthentication.Controllers
 
         // PUT: api/Categorias/5
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 204)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -65,7 +69,7 @@ namespace JwtAuthentication.Controllers
 
             if (id != categoria.Id)
             {
-                return BadRequest();
+                return BadRequest("O parâmetro id utilizado na url não corresponde ao da categoria");
             }
 
             _context.Entry(categoria).State = EntityState.Modified;
@@ -78,7 +82,7 @@ namespace JwtAuthentication.Controllers
             {
                 if (!CategoriaExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Categoria não encontrada");
                 }
                 else
                 {
@@ -91,6 +95,7 @@ namespace JwtAuthentication.Controllers
 
         // POST: api/Categorias
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 201)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -109,6 +114,7 @@ namespace JwtAuthentication.Controllers
 
         // DELETE: api/Categorias/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
@@ -122,7 +128,7 @@ namespace JwtAuthentication.Controllers
             var categoria = await _context.Categorias.FindAsync(id);
             if (categoria == null)
             {
-                return NotFound();
+                return NotFound("Categoria não encontrada");
             }
 
             _context.Categorias.Remove(categoria);
