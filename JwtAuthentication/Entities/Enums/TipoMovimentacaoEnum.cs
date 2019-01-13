@@ -1,14 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System.Runtime.Serialization;
 
 namespace JwtAuthentication.Entities.Enums
 {
     public enum TipoMovimentacaoEnum
     {
-        [Description("Categorizar")]
+        [EnumMember(Value = "0")]
         Categorizar = 0,
-        [Description("Entrada")]
+        [EnumMember(Value = "1")]
         Entrada = 1,
-        [Description("Saída")]
+        [EnumMember(Value = "2")]
         Saida = 2
     }
 }

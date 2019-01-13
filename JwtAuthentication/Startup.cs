@@ -7,6 +7,7 @@ using JwtAuthentication.Data;
 using JwtAuthentication.Entities;
 using JwtAuthentication.Factories.Auth;
 using JwtAuthentication.Helpers.Settings;
+using JwtAuthentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -91,6 +92,14 @@ namespace JwtAuthentication
                     { "Bearer", Enumerable.Empty<string>() },
                 });
             });
+
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
+
+            services.AddSingleton<CategoriasService, CategoriasService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

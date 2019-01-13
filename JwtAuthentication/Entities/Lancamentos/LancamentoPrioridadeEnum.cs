@@ -1,14 +1,14 @@
-﻿using System.ComponentModel;
+﻿using System.Runtime.Serialization;
 
 namespace JwtAuthentication.Entities.Lancamentos
 {
     public enum LancamentoPrioridadeEnum
     {
-        [Description("Categorizar")]
+        [EnumMember(Value = "0")]
         Categorizar = 0,
-        [Description("Fixa")]
+        [EnumMember(Value = "1")]
         Fixa = 1,
-        [Description("Variável")]
+        [EnumMember(Value = "2")]
         Variavel = 2
     }
 }

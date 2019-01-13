@@ -1,18 +1,18 @@
-﻿using System.ComponentModel;
+﻿using System.Runtime.Serialization;
 
 namespace JwtAuthentication.Entities.Enums
 {
     public enum TipoOperacaoEnum
     {
-        [Description("Categorizar")]
+        [EnumMember(Value = "0")]
         Categorizar = 0,
-        [Description("Cartão de Crédito")]
+        [EnumMember(Value = "1")]
         CartaoCredito = 1,
-        [Description("Débito em Conta")]
+        [EnumMember(Value = "2")]
         DebitoEmConta = 2,
-        [Description("Dinheiro")]
+        [EnumMember(Value = "3")]
         Dinheiro = 3,
-        [Description("Vale")]
+        [EnumMember(Value = "4")]
         ValeRefeicao = 4
     }
 }

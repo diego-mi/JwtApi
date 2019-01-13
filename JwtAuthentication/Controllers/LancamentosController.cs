@@ -48,7 +48,7 @@ namespace JwtAuthentication.Controllers
 
             if (lancamento == null)
             {
-                return NotFound();
+                return NotFound("Lancamento não encontrado");
             }
 
             return Ok(lancamento);
@@ -68,7 +68,7 @@ namespace JwtAuthentication.Controllers
 
             if (id != lancamento.Id)
             {
-                return BadRequest();
+                return BadRequest("O parâmetro Id na url não corresponde ao informado no lançamento");
             }
 
             _context.Entry(lancamento).State = EntityState.Modified;
@@ -82,7 +82,7 @@ namespace JwtAuthentication.Controllers
             {
                 if (!LancamentoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Lançamento não encontrado");
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace JwtAuthentication.Controllers
             var lancamento = await _context.Lancamentos.FindAsync(id);
             if (lancamento == null)
             {
-                return NotFound();
+                return NotFound("Lançamento não encontrado");
             }
 
             _context.Lancamentos.Remove(lancamento);

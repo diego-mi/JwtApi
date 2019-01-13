@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Categorias;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using JwtAuthentication.Services;
 
 namespace JwtAuthentication.Controllers
 {
@@ -15,10 +17,12 @@ namespace JwtAuthentication.Controllers
     public class CategoriasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly CategoriasService _categoriasService;
 
-        public CategoriasController(ApplicationDbContext context)
+        public CategoriasController(ApplicationDbContext context, CategoriasService categoriasService)
         {
             _context = context;
+            _categoriasService = categoriasService;
         }
 
         // GET: api/Categorias
@@ -140,6 +144,16 @@ namespace JwtAuthentication.Controllers
         private bool CategoriaExists(int id)
         {
             return _context.Categorias.Any(e => e.Id == id);
+        }
+
+        // GET: api/Categorias/grupos
+        [HttpGet("grupos")]
+        [Authorize]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
+        public IActionResult GetCategoriaGrupos()
+        {
+            return Ok(_categoriasService.GetGrupos());
         }
     }
 }
