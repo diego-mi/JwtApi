@@ -16,12 +16,12 @@ namespace JwtAuthentication.Controllers
     public class LancamentosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly TagueamentoService _tagueamentoService;
+        //private readonly TagueamentoService _tagueamentoService;
 
-        public LancamentosController(ApplicationDbContext context, TagueamentoService tagueamentoService)
+        public LancamentosController(ApplicationDbContext context)
         {
             _context = context;
-            _tagueamentoService = tagueamentoService;
+            //_tagueamentoService = tagueamentoService;
         }
 
         // GET: api/Lancamentos
@@ -78,7 +78,7 @@ namespace JwtAuthentication.Controllers
 
             try
             {
-                _tagueamentoService.Taguear(lancamento);
+                //_tagueamentoService.Taguear(lancamento);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -110,7 +110,7 @@ namespace JwtAuthentication.Controllers
             }
 
             _context.Lancamentos.Add(lancamento);
-            _tagueamentoService.Taguear(lancamento);
+            //_tagueamentoService.Taguear(lancamento);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLancamento", new { id = lancamento.Id }, lancamento);

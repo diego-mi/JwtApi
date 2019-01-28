@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace JwtAuthentication.Entities.Lancamentos
 {
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum LancamentoSituacaoEnum
     {
         [EnumMember(Value = "0")]

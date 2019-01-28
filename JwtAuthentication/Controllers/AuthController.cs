@@ -72,7 +72,7 @@ namespace JwtAuthentication.Controllers
                       username = user.UserName,
                       email = user.Email,
                       Thumbnail = user.Thumbnail,
-                      token = "Bearer" + new JwtSecurityTokenHandler().WriteToken(token)
+                      token = new JwtSecurityTokenHandler().WriteToken(token)
                   });
             }
             return Unauthorized();

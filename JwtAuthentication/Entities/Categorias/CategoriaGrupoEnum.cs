@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace JwtAuthentication.Entities.Categorias
 {
-    [JsonConverter(typeof(StringEnumConverter))]
+    //[JsonConverter(typeof(StringEnumConverter))]
     public enum CategoriaGrupoEnum
     {
         [Description("Não Categorizado")]
