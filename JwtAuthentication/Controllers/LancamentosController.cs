@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Lancamentos;
 using JwtAuthentication.Services;
+using JwtAuthentication.Entities.Categorias;
 
 namespace JwtAuthentication.Controllers
 {
@@ -30,7 +31,7 @@ namespace JwtAuthentication.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Lancamento> GetLancamentos()
         {
-            return _context.Lancamentos;
+            return _context.Lancamentos.Include(l => l.Categoria);
         }
 
         // GET: api/Lancamentos/5
