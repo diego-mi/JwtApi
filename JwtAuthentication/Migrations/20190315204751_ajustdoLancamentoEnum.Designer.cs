@@ -4,14 +4,16 @@ using JwtAuthentication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JwtAuthentication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190315204751_ajustdoLancamentoEnum")]
+    partial class ajustdoLancamentoEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,8 +167,7 @@ namespace JwtAuthentication.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("Situacao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(24)");
+                        .IsRequired();
 
                     b.Property<string>("Tipo");
 

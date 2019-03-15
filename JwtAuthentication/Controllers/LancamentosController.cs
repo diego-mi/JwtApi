@@ -31,7 +31,15 @@ namespace JwtAuthentication.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public IEnumerable<Lancamento> GetLancamentos()
         {
-            return _context.Lancamentos.Include(l => l.Categoria);
+            try
+            {
+                return _context.Lancamentos.Include(l => l.Categoria);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
         }
 
         // GET: api/Lancamentos/5

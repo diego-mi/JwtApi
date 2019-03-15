@@ -39,15 +39,25 @@ namespace JwtAuthentication.Entities.Lancamentos
         [EnumDataType(typeof(TipoMovimentacaoEnum))]
         public TipoMovimentacaoEnum TipoMovimentacao { get; set; }
 
+        [NotMapped]
+        public string TipoMovimentacaoNome => TipoMovimentacao.ToString("g");
+
         [Display(Name = "Situação")]
         [Required]
         [EnumDataType(typeof(LancamentoSituacaoEnum))]
+        [Column(TypeName = "nvarchar(24)")]
         public LancamentoSituacaoEnum Situacao { get; set; }
+
+        [NotMapped]
+        public string SituacaoNome => Situacao.ToString("g");
 
         [Display(Name = "Tipo de Operação")]
         [Required]
         [EnumDataType(typeof(TipoOperacaoEnum))]
         public TipoOperacaoEnum TipoOperacao { get; set; }
+
+        [NotMapped]
+        public string TipoOperacaoNome => TipoOperacao.ToString("g");
 
         [Display(Name = "Categoria")]
         public int CategoriaId { get; set; }
