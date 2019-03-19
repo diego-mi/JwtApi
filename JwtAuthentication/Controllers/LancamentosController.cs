@@ -9,40 +9,38 @@ using JwtAuthentication.Data;
 using JwtAuthentication.Entities.Lancamentos;
 using JwtAuthentication.Services;
 using JwtAuthentication.Entities.Categorias;
+using Microsoft.AspNetCore.Authorization;
+using JwtAuthentication.Helpers.Paging;
+using JwtAuthentication.DTO.Lancamentos;
 
 namespace JwtAuthentication.Controllers
 {
     [Route("api/v1/lancamentos")]
     [ApiController]
+    [Authorize]
     public class LancamentosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly LancamentosService _lancamentosService;
         //private readonly TagueamentoService _tagueamentoService;
 
-        public LancamentosController(ApplicationDbContext context)
+        public LancamentosController(ApplicationDbContext context, LancamentosService lancamentosService)
         {
             _context = context;
+            _lancamentosService = lancamentosService;
             //_tagueamentoService = tagueamentoService;
         }
 
-        // GET: api/Lancamentos
-        [HttpGet]
+        // GET: api/v1/Lancamentos
+        [HttpGet()]
         [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
-        public IEnumerable<Lancamento> GetLancamentos()
+        public Object GetLancamentos([FromQuery] LancamentosListagemQueryParams lancamentosListagemQueryParams)
         {
-            try
-            {
-                return _context.Lancamentos.Include(l => l.Categoria);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            
+            return _lancamentosService.ListagemPaginada(lancamentosListagemQueryParams);
         }
 
-        // GET: api/Lancamentos/5
+        // GET: api/v1/Lancamentos/5
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
@@ -55,7 +53,7 @@ namespace JwtAuthentication.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lancamento = await _context.Lancamentos.FindAsync(id);
+            var lancamento = await _context.Lancamentos.Include(l => l.Categoria).AsNoTracking().FirstOrDefaultAsync(l => l.Id == id);
 
             if (lancamento == null)
             {
@@ -65,7 +63,7 @@ namespace JwtAuthentication.Controllers
             return Ok(lancamento);
         }
 
-        // PUT: api/Lancamentos/5
+        // PUT: api/v1/Lancamentos/5
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(IDictionary<string, string>), 204)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
@@ -105,7 +103,7 @@ namespace JwtAuthentication.Controllers
             return NoContent();
         }
 
-        // POST: api/Lancamentos
+        // POST: api/v1/Lancamentos
         [HttpPost]
         [ProducesResponseType(typeof(IDictionary<string, string>), 201)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
@@ -125,7 +123,7 @@ namespace JwtAuthentication.Controllers
             return CreatedAtAction("GetLancamento", new { id = lancamento.Id }, lancamento);
         }
 
-        // DELETE: api/Lancamentos/5
+        // DELETE: api/v1/Lancamentos/5
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]

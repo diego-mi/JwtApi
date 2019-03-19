@@ -69,6 +69,9 @@ namespace JwtAuthentication
                 };
             });
 
+            // Adicionando os services criados
+            services.AddScoped<LancamentosService, LancamentosService>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
