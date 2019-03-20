@@ -20,13 +20,11 @@ namespace JwtAuthentication.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly ConfiguracoesService _configuracoesService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ConfiguracoesService configuracoesService)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _configuracoesService = configuracoesService;
         }
 
         [Route("register")]
@@ -72,7 +70,6 @@ namespace JwtAuthentication.Controllers
                   new
                   {
                       user = new UserLoginViewModel(user),
-                      configuracoes = _configuracoesService.GetConfiguracoes(),
                       token = new JwtSecurityTokenHandler().WriteToken(token)
                   });
             }
