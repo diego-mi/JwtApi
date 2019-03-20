@@ -14,6 +14,10 @@ namespace JwtAuthentication.Entities.Categorias
         public string Nome { get; set; }
 
         [Required]
+        [StringLength(100)]
+        public string Icone { get; set; }
+
+        [Required]
         public CategoriaGrupoEnum Grupo { get; set; }
 
         public string AutorId { get; set; }

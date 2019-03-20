@@ -4,14 +4,16 @@ using JwtAuthentication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JwtAuthentication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190320204739_AdicionadoIconeACategoria")]
+    partial class AdicionadoIconeACategoria
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,33 +102,33 @@ namespace JwtAuthentication.Migrations
 
                     b.HasData(
                         new { Id = 1, Grupo = 0, Icone = "simple-icon-exclamation", Nome = "A Categorizar" },
-                        new { Id = 2, Grupo = 1, Icone = "iconsmind-Warehouse", Nome = "Aluguel" },
-                        new { Id = 3, Grupo = 1, Icone = "iconsmind-Light-Bulb", Nome = "Luz" },
-                        new { Id = 4, Grupo = 1, Icone = "iconsmind-Glass-Water", Nome = "Água" },
-                        new { Id = 5, Grupo = 1, Icone = "iconsmind-Old-TV", Nome = "TV/Internet/Telefone Residêncial" },
-                        new { Id = 6, Grupo = 1, Icone = "iconsmind-Repair", Nome = "Manutenção/Melhorias" },
-                        new { Id = 7, Grupo = 1, Icone = "iconsmind-Security-Block", Nome = "Seguros" },
-                        new { Id = 8, Grupo = 1, Icone = "iconsmind-Security-Camera", Nome = "Segurança" },
-                        new { Id = 9, Grupo = 2, Icone = "iconsmind-Add-Cart", Nome = "Mercado Dispensa/Essencial" },
-                        new { Id = 10, Grupo = 2, Icone = "iconsmind-Add-Cart", Nome = "Mercado Filhas" },
-                        new { Id = 11, Grupo = 2, Icone = "iconsmind-Add-Cart", Nome = "Mercado não essencial" },
-                        new { Id = 12, Grupo = 3, Icone = "iconsmind-Rain-Drop", Nome = "Higiêne Geral" },
-                        new { Id = 13, Grupo = 3, Icone = "iconsmind-Rain-Drop", Nome = "Higiêne Filhas" },
-                        new { Id = 14, Grupo = 3, Icone = "iconsmind-Medical-Sign", Nome = "Plano de saúde" },
-                        new { Id = 15, Grupo = 3, Icone = "iconsmind-Medicine-3", Nome = "Farmácia" },
-                        new { Id = 16, Grupo = 3, Icone = "iconsmind-Medicine-3", Nome = "Farmácia Filhas" },
-                        new { Id = 17, Grupo = 5, Icone = "iconsmind-Motorcycle", Nome = "Moto - Abastecimento" },
-                        new { Id = 18, Grupo = 5, Icone = "iconsmind-Motorcycle", Nome = "Moto - Manutenção/Melhorias" },
-                        new { Id = 19, Grupo = 5, Icone = "iconsmind-Taxi-Sign", Nome = "Uber - Essencial" },
-                        new { Id = 20, Grupo = 5, Icone = "iconsmind-Taxi-Sign", Nome = "Uber - Escola Laura" },
-                        new { Id = 21, Grupo = 5, Icone = "iconsmind-Taxi-Sign", Nome = "Uber - Saidinhas e Outros" },
-                        new { Id = 22, Grupo = 5, Icone = "iconsmind-Taxi-2", Nome = "Outros" },
-                        new { Id = 23, Grupo = 4, Icone = "simple-icon-notebook", Nome = "Educação" },
-                        new { Id = 24, Grupo = 6, Icone = "iconsmind-Coffee", Nome = "Lanches / Saidinhas" },
-                        new { Id = 25, Grupo = 6, Icone = "iconsmind-Car-Coins", Nome = "Compras" },
+                        new { Id = 2, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Aluguel" },
+                        new { Id = 3, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Luz" },
+                        new { Id = 4, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Água" },
+                        new { Id = 5, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "TV/Internet/Telefone Residêncial" },
+                        new { Id = 6, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Manutenção/Melhorias" },
+                        new { Id = 7, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Seguros" },
+                        new { Id = 8, Grupo = 1, Icone = "simple-icon-exclamation", Nome = "Segurança" },
+                        new { Id = 9, Grupo = 2, Icone = "simple-icon-exclamation", Nome = "Mercado Dispensa/Essencial" },
+                        new { Id = 10, Grupo = 2, Icone = "simple-icon-exclamation", Nome = "Mercado Filhas" },
+                        new { Id = 11, Grupo = 2, Icone = "simple-icon-exclamation", Nome = "Mercado não essencial" },
+                        new { Id = 12, Grupo = 3, Icone = "simple-icon-exclamation", Nome = "Higiêne Geral" },
+                        new { Id = 13, Grupo = 3, Icone = "simple-icon-exclamation", Nome = "Higiêne Filhas" },
+                        new { Id = 14, Grupo = 3, Icone = "simple-icon-exclamation", Nome = "Plano de saúde" },
+                        new { Id = 15, Grupo = 3, Icone = "simple-icon-exclamation", Nome = "Farmácia" },
+                        new { Id = 16, Grupo = 3, Icone = "simple-icon-exclamation", Nome = "Farmácia Filhas" },
+                        new { Id = 17, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Moto - Abastecimento" },
+                        new { Id = 18, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Moto - Manutenção/Melhorias" },
+                        new { Id = 19, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Uber - Essencial" },
+                        new { Id = 20, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Uber - Escola Laura" },
+                        new { Id = 21, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Uber - Saidinhas e Outros" },
+                        new { Id = 22, Grupo = 5, Icone = "simple-icon-exclamation", Nome = "Outros" },
+                        new { Id = 23, Grupo = 4, Icone = "simple-icon-exclamation", Nome = "Educação" },
+                        new { Id = 24, Grupo = 6, Icone = "simple-icon-exclamation", Nome = "Lanches / Saidinhas" },
+                        new { Id = 25, Grupo = 6, Icone = "simple-icon-exclamation", Nome = "Compras" },
                         new { Id = 26, Grupo = 6, Icone = "simple-icon-exclamation", Nome = "Cuidados Pessoais" },
                         new { Id = 27, Grupo = 6, Icone = "simple-icon-exclamation", Nome = "Despesas do Trabalho" },
-                        new { Id = 28, Grupo = 6, Icone = "simple-icon-present", Nome = "Presentes/Doações" },
+                        new { Id = 28, Grupo = 6, Icone = "simple-icon-exclamation", Nome = "Presentes/Doações" },
                         new { Id = 29, Grupo = 7, Icone = "simple-icon-exclamation", Nome = "Pensão Mariah" },
                         new { Id = 30, Grupo = 8, Icone = "simple-icon-exclamation", Nome = "Impostos" },
                         new { Id = 31, Grupo = 8, Icone = "simple-icon-exclamation", Nome = "Multa/Juros" },
