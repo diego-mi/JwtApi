@@ -1,5 +1,6 @@
 ﻿using JwtAuthentication.Data;
 using JwtAuthentication.DTO.Lancamentos;
+using JwtAuthentication.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,19 @@ namespace JwtAuthentication.Services
                 if (!string.IsNullOrWhiteSpace(lancamentosListagemQueryParams.Situacao))
                 {
                     query = query.Where(l => l.Situacao.ToString() == lancamentosListagemQueryParams.Situacao);
+                }
+
+                // Pesquisa por operacao
+                if (!string.IsNullOrWhiteSpace(lancamentosListagemQueryParams.TipoOperacao))
+                {
+                    query = query.Where(l => l.TipoOperacao.ToString() == lancamentosListagemQueryParams.TipoOperacao);
+                }
+
+                // Pesquisa por movimentacao
+                if (!string.IsNullOrWhiteSpace(lancamentosListagemQueryParams.TipoMovimentacao))
+                {
+                    int tipoOperacaoInt = Convert.ToInt32(lancamentosListagemQueryParams.TipoMovimentacao);
+                    query = query.Where(l => l.TipoMovimentacao == (TipoMovimentacaoEnum)tipoOperacaoInt);
                 }
 
                 // OrderBys
