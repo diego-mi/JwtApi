@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using JwtAuthentication.Entities;
+using JwtAuthentication.Services.Configuracoes;
 using JwtAuthentication.ViewModels.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,11 +20,13 @@ namespace JwtAuthentication.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly ConfiguracoesService _configuracoesService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ConfiguracoesService configuracoesService)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _configuracoesService = configuracoesService;
         }
 
         [Route("register")]
@@ -68,10 +71,8 @@ namespace JwtAuthentication.Controllers
                 return Ok(
                   new
                   {
-                      id = user.Id,
-                      username = user.UserName,
-                      email = user.Email,
-                      Thumbnail = user.Thumbnail,
+                      user = new UserLoginViewModel(user),
+                      configuracoes = _configuracoesService.GetConfiguracoes(),
                       token = new JwtSecurityTokenHandler().WriteToken(token)
                   });
             }

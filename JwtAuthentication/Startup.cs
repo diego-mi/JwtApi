@@ -6,6 +6,7 @@ using JwtAuthentication.Entities;
 using JwtAuthentication.Factories.Auth;
 using JwtAuthentication.Helpers.Settings;
 using JwtAuthentication.Services;
+using JwtAuthentication.Services.Configuracoes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -71,6 +72,10 @@ namespace JwtAuthentication
 
             // Adicionando os services criados
             services.AddScoped<LancamentosService, LancamentosService>();
+            services.AddScoped<CategoriasService, CategoriasService>();
+            services.AddScoped<ConfiguracoesService, ConfiguracoesService>();
+            services.AddScoped<EnumService, EnumService>();
+            services.AddSingleton<TagueamentoService, TagueamentoService>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -96,9 +101,6 @@ namespace JwtAuthentication
             //    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
             //    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             //});
-
-            services.AddSingleton<CategoriasService, CategoriasService>();
-            services.AddSingleton<TagueamentoService, TagueamentoService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

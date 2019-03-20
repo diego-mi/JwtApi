@@ -48,14 +48,15 @@ namespace JwtAuthentication.Services
                 // Pesquisa por operacao
                 if (!string.IsNullOrWhiteSpace(lancamentosListagemQueryParams.TipoOperacao))
                 {
-                    query = query.Where(l => l.TipoOperacao.ToString() == lancamentosListagemQueryParams.TipoOperacao);
+                    int tipoOperacaoInt = Convert.ToInt32(lancamentosListagemQueryParams.TipoOperacao);
+                    query = query.Where(l => l.TipoOperacao == (TipoOperacaoEnum)tipoOperacaoInt);
                 }
 
                 // Pesquisa por movimentacao
                 if (!string.IsNullOrWhiteSpace(lancamentosListagemQueryParams.TipoMovimentacao))
                 {
-                    int tipoOperacaoInt = Convert.ToInt32(lancamentosListagemQueryParams.TipoMovimentacao);
-                    query = query.Where(l => l.TipoMovimentacao == (TipoMovimentacaoEnum)tipoOperacaoInt);
+                    int tipoMovimentacaoInt = Convert.ToInt32(lancamentosListagemQueryParams.TipoMovimentacao);
+                    query = query.Where(l => l.TipoMovimentacao == (TipoMovimentacaoEnum)tipoMovimentacaoInt);
                 }
 
                 // OrderBys

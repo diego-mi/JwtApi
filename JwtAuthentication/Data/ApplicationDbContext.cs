@@ -1,4 +1,5 @@
-﻿using JwtAuthentication.Entities;
+﻿using JwtAuthentication.DTO.Configuracoes;
+using JwtAuthentication.Entities;
 using JwtAuthentication.Entities.Categorias;
 using JwtAuthentication.Entities.Lancamentos;
 using JwtAuthentication.Entities.Planejamentos;
@@ -21,6 +22,7 @@ namespace JwtAuthentication.Data
 
         public DbSet<Lancamento> Lancamentos { get; set; }
         public DbSet<SubLancamento> SubLancamento { get; set; }
+        public DbQuery<MesAnoComLancamentos> MesAnoComLancamentos { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
