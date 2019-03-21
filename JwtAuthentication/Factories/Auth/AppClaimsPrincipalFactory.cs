@@ -26,13 +26,6 @@ namespace JwtAuthentication.Factories.Auth
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(user.Thumbnail))
-            {
-                ((ClaimsIdentity)principal.Identity).AddClaims(new[] {
-                     new Claim(ClaimTypes.Uri, user.Thumbnail),
-                });
-            }
-
             return principal;
         }
     }

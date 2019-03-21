@@ -13,9 +13,6 @@ namespace JwtAuthentication.ViewModels.Auth
 
         [Required]
         public string Name { get; set; }
-
-        [Required]
-        public string Thumbnail { get; set; }
     }
 
 }

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using JwtAuthentication.Entities;
+using JwtAuthentication.Services.Auth;
 using JwtAuthentication.Services.Configuracoes;
 using JwtAuthentication.ViewModels.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -20,60 +21,54 @@ namespace JwtAuthentication.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AuthService _authService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, AuthService authService)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _authService = authService;
         }
 
         [Route("register")]
         [HttpPost]
         public async Task<ActionResult> InsertUser([FromBody] RegisterViewModel model)
         {
-            var user = new ApplicationUser
+            try
             {
-                Email = model.Email,
-                UserName = model.Email,
-                Name = model.Name,
-                Thumbnail = model.Thumbnail,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+                var user = new ApplicationUser
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    Name = model.Name,
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "Customer");
+                }
+                return Ok(new { Username = user.UserName });
+            } catch (Exception exception)
             {
-                await _userManager.AddToRoleAsync(user, "Customer");
+                return BadRequest(new { message = "Teste: " + exception.Message });
             }
-            return Ok(new { Username = user.UserName });
         }
 
         [Route("login")]
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] LoginViewModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-                var signinKey = new SymmetricSecurityKey(
-                  Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
+                UserLoginResponse userLoginResponse = await _authService.LoginAsync(model);
 
-                int expiryInMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryInMinutes"]);
-
-                var token = new JwtSecurityToken(
-                  issuer: _configuration["Jwt:Site"],
-                  audience: _configuration["Jwt:Site"],
-                  expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
-                  signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
-                );
-
-                return Ok(
-                  new
-                  {
-                      user = new UserLoginViewModel(user),
-                      token = new JwtSecurityTokenHandler().WriteToken(token)
-                  });
+                return Ok(userLoginResponse);
             }
-            return Unauthorized();
+            catch (Exception exception)
+            {
+                return BadRequest(new { LoggedIn = false, Message = exception.Message });
+            }
         }
     }
 

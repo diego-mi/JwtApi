@@ -6,6 +6,7 @@ using JwtAuthentication.Entities;
 using JwtAuthentication.Factories.Auth;
 using JwtAuthentication.Helpers.Settings;
 using JwtAuthentication.Services;
+using JwtAuthentication.Services.Auth;
 using JwtAuthentication.Services.Configuracoes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -71,6 +72,7 @@ namespace JwtAuthentication
             });
 
             // Adicionando os services criados
+            services.AddScoped<AuthService, AuthService>();
             services.AddScoped<LancamentosService, LancamentosService>();
             services.AddScoped<CategoriasService, CategoriasService>();
             services.AddScoped<ConfiguracoesService, ConfiguracoesService>();
