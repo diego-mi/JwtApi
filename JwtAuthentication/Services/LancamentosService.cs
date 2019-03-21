@@ -70,7 +70,7 @@ namespace JwtAuthentication.Services
                 }
                 else if (lancamentosListagemQueryParams.OrderBy == "Data")
                 {
-                    query = query.OrderBy(l => l.Data);
+                    query = query.OrderByDescending(l => l.Data);
                 }
                 else if (lancamentosListagemQueryParams.OrderBy == "CategoriaId")
                 {
