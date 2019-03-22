@@ -1,4 +1,5 @@
-﻿using JwtAuthentication.Entities;
+﻿using JwtAuthentication.DTO.Usuario;
+using JwtAuthentication.Entities;
 using JwtAuthentication.ViewModels.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,14 @@ using System.Threading.Tasks;
 
 namespace JwtAuthentication.Services.Auth
 {
-    public class AuthService
+    public interface IAuthService
+    {
+        Task<UserLoginResponse> LoginAsync(LoginViewModel model);
+        Task<UserRegisterResponse> RegisterAsync(RegisterViewModel model);
+
+    }
+
+    public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -23,9 +31,15 @@ namespace JwtAuthentication.Services.Auth
             _configuration = configuration;
         }
 
+        #region Login
+
         public async Task<UserLoginResponse> LoginAsync(LoginViewModel model)
         {
-            UserLoginResponse userLoginResponse = new UserLoginResponse();
+            UserLoginResponse userLoginResponse = new UserLoginResponse
+            {
+                Model = model
+            };
+
             try
             {
                 var user = await _userManager.FindByNameAsync(model.Username);
@@ -52,7 +66,7 @@ namespace JwtAuthentication.Services.Auth
             }
         }
 
-        private string GetToken ()
+        private string GetToken()
         {
             var signinKey = new SymmetricSecurityKey(
                       Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
@@ -68,5 +82,62 @@ namespace JwtAuthentication.Services.Auth
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        #endregion Login
+
+        #region Register
+
+        public async Task<UserRegisterResponse> RegisterAsync(RegisterViewModel model)
+        {
+            UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
+
+            try
+            {
+                ApplicationUser applicationUser = new ApplicationUser
+                {
+                    Email = model.Email,
+                    UserName = model.Email,
+                    Name = model.Name,
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
+
+                var result = await _userManager.CreateAsync(applicationUser, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await AddRoleToUserAsync(applicationUser);
+                    userRegisterResponse.Succeded = true;
+                }
+                else
+                {
+                    userRegisterResponse.Succeded = false;
+                    foreach (var erro in result.Errors)
+                    {
+                        if (erro.Code == "DuplicateUserName")
+                        {
+                            userRegisterResponse.Message.Add("O email '" + applicationUser.UserName + "' já está em uso.");
+                        }
+                        else
+                        {
+                            userRegisterResponse.Message.Add("Erro: " + erro.Code + " - " + erro.Description);
+                        }
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                userRegisterResponse.Succeded = false;
+                userRegisterResponse.Message.Add(exception.Message);
+            }
+
+            return userRegisterResponse;
+        }
+
+        private async Task AddRoleToUserAsync(ApplicationUser applicationUser)
+        {
+            await _userManager.AddToRoleAsync(applicationUser, "Customer");
+        }
+
+        #endregion Register
     }
 }

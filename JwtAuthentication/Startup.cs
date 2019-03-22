@@ -72,7 +72,7 @@ namespace JwtAuthentication
             });
 
             // Adicionando os services criados
-            services.AddScoped<AuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<LancamentosService, LancamentosService>();
             services.AddScoped<CategoriasService, CategoriasService>();
             services.AddScoped<ConfiguracoesService, ConfiguracoesService>();

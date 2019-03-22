@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,9 +22,9 @@ namespace JwtAuthentication.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, AuthService authService)
+        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, IAuthService authService)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -32,31 +33,30 @@ namespace JwtAuthentication.Controllers
 
         [Route("register")]
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public async Task<ActionResult> InsertUser([FromBody] RegisterViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                IUserRegisterResponse userRegisterResponse = await _authService.RegisterAsync(model);
+
+                if (userRegisterResponse.Succeded)
                 {
-                    Email = model.Email,
-                    UserName = model.Email,
-                    Name = model.Name,
-                    SecurityStamp = Guid.NewGuid().ToString()
-                };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    return Ok(userRegisterResponse);
                 }
-                return Ok(new { Username = user.UserName });
-            } catch (Exception exception)
-            {
-                return BadRequest(new { message = "Teste: " + exception.Message });
+
+                return BadRequest(userRegisterResponse);
             }
+
+            return BadRequest(model);
         }
 
         [Route("login")]
         [HttpPost]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         public async Task<ActionResult> Login([FromBody] LoginViewModel model)
         {
             try
@@ -67,7 +67,14 @@ namespace JwtAuthentication.Controllers
             }
             catch (Exception exception)
             {
-                return BadRequest(new { LoggedIn = false, Message = exception.Message });
+                return BadRequest(
+                    new UserLoginResponse()
+                    {
+                        Model = model,
+                        LoggedIn = false,
+                        Message = exception.Message
+                    }
+                );
             }
         }
     }
