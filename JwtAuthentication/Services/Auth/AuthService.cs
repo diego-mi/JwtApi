@@ -1,5 +1,6 @@
 ﻿using JwtAuthentication.DTO.Usuario;
 using JwtAuthentication.Entities;
+using JwtAuthentication.Factories.Auth;
 using JwtAuthentication.ViewModels.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -35,34 +36,27 @@ namespace JwtAuthentication.Services.Auth
 
         public async Task<UserLoginResponse> LoginAsync(LoginViewModel model)
         {
-            UserLoginResponse userLoginResponse = new UserLoginResponse
-            {
-                Model = model
-            };
-
             try
             {
                 var user = await _userManager.FindByNameAsync(model.Username);
-                userLoginResponse.User = new UserLoginViewModel(user);
-                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-                {
-                    userLoginResponse.Token = GetToken();
-                    userLoginResponse.LoggedIn = true;
 
-                    return userLoginResponse;
+                if (user == null)
+                {
+                    return UserLoginResponseFactory.LoginWithUserNotFound();
                 }
 
-                userLoginResponse.LoggedIn = false;
-                userLoginResponse.Message = "Usuário e/ou senha inválidos!";
+                bool userAndPassworkIsCorrect = await _userManager.CheckPasswordAsync(user, model.Password);
 
-                return userLoginResponse;
+                if (userAndPassworkIsCorrect)
+                {
+                    return UserLoginResponseFactory.LoginWithUserAndPassworValid(GetToken());
+                }
+
+                return UserLoginResponseFactory.LoginWithWrongPassword();
             }
             catch (Exception exception)
             {
-                userLoginResponse.LoggedIn = false;
-                userLoginResponse.Message = exception.Message;
-
-                return userLoginResponse;
+                return UserLoginResponseFactory.LoginWithServerError(exception.Message);
             }
         }
 

@@ -70,7 +70,6 @@ namespace JwtAuthentication.Controllers
                 return BadRequest(
                     new UserLoginResponse()
                     {
-                        Model = model,
                         LoggedIn = false,
                         Message = exception.Message
                     }
