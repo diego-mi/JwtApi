@@ -111,14 +111,21 @@ namespace JwtAuthentication.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
         public async Task<IActionResult> PostLancamento([FromBody] Lancamento lancamento)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            _context.Lancamentos.Add(lancamento);
-            //_tagueamentoService.Taguear(lancamento);
-            await _context.SaveChangesAsync();
+                _context.Lancamentos.Add(lancamento);
+                //_tagueamentoService.Taguear(lancamento);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
 
             return CreatedAtAction("GetLancamento", new { id = lancamento.Id }, lancamento);
         }
