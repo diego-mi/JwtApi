@@ -12,6 +12,8 @@ using JwtAuthentication.Entities.Categorias;
 using Microsoft.AspNetCore.Authorization;
 using JwtAuthentication.Helpers.Paging;
 using JwtAuthentication.DTO.Lancamentos;
+using JwtAuthentication.Requests.Lancamentos;
+using JwtAuthentication.Responses.Lancamentos;
 
 namespace JwtAuthentication.Controllers
 {
@@ -109,7 +111,7 @@ namespace JwtAuthentication.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 401)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 404)]
-        public async Task<IActionResult> PostLancamento([FromBody] Lancamento lancamento)
+        public async Task<IActionResult> PostLancamento([FromBody] LancamentoCreateRequest lancamentoRequest)
         {
             try
             {
@@ -118,16 +120,16 @@ namespace JwtAuthentication.Controllers
                     return BadRequest(ModelState);
                 }
 
-                _context.Lancamentos.Add(lancamento);
-                //_tagueamentoService.Taguear(lancamento);
-                await _context.SaveChangesAsync();
+                LancamentoCreateResponse lancamentoCreateResponse = await _lancamentosService.CreateAsync(lancamentoRequest);
+
+                return CreatedAtAction("GetLancamento", new { }, lancamentoCreateResponse);
             }
             catch (Exception exception)
             {
                 return BadRequest(exception.Message);
             }
 
-            return CreatedAtAction("GetLancamento", new { id = lancamento.Id }, lancamento);
+            
         }
 
         // DELETE: api/v1/Lancamentos/5

@@ -1,6 +1,10 @@
 ﻿using JwtAuthentication.Data;
 using JwtAuthentication.DTO.Lancamentos;
 using JwtAuthentication.Entities.Enums;
+using JwtAuthentication.Entities.Lancamentos;
+using JwtAuthentication.Factories.Lancamentos;
+using JwtAuthentication.Requests.Lancamentos;
+using JwtAuthentication.Responses.Lancamentos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +22,7 @@ namespace JwtAuthentication.Services
             _context = context;
         }
 
-        public object ListagemPaginada (LancamentosListagemQueryParams lancamentosListagemQueryParams)
+        public object ListagemPaginada(LancamentosListagemQueryParams lancamentosListagemQueryParams)
         {
             try
             {
@@ -111,6 +115,78 @@ namespace JwtAuthentication.Services
                     MensagemErro = exception.Message
                 };
             }
+        }
+
+        public async Task<LancamentoCreateResponse> CreateAsync(LancamentoCreateRequest lancamentoRequest)
+        {
+            if (lancamentoRequest.QuantidadeDeParcelas == 1)
+            {
+                return await CreateOneAsync(lancamentoRequest);
+            }
+            else
+            {
+                return await CreateManyAsync(lancamentoRequest);
+            }
+        }
+
+        public async Task<LancamentoCreateResponse> CreateOneAsync(LancamentoCreateRequest lancamentoRequest)
+        {
+            try
+            {
+                Lancamento lancamento = LancamentoCreateEntityFactory.CreateOneByRequest(lancamentoRequest);
+
+                _context.Lancamentos.Add(lancamento);
+                await _context.SaveChangesAsync();
+
+                return LancamentoCreateResponseFactory.CreatedOneSuccess(lancamento);
+            }
+            catch (Exception exception)
+            {
+                return LancamentoCreateResponseFactory.CreateOneFailedWithServerError(exception.Message);
+            }
+        }
+
+        public async Task<LancamentoCreateResponse> CreateManyAsync(LancamentoCreateRequest lancamentoRequest)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    int quantidadeParcelaACriar = lancamentoRequest.QuantidadeDeParcelas - lancamentoRequest.ParcelaAtual - 1;
+
+                    IList<Lancamento> lancamentos = CriarLancamentosParcelados(lancamentoRequest, quantidadeParcelaACriar);
+                    AddLancamentosToSave(lancamentos);
+                    await _context.SaveChangesAsync();
+
+                    transaction.Commit();
+
+                    return LancamentoCreateResponseFactory.CreatedManySuccess(lancamentos);
+                }
+                catch (Exception exception)
+                {
+                    return LancamentoCreateResponseFactory.CreateManyFailedWithServerError(exception.Message);
+                }
+            }
+        }
+
+        private void AddLancamentosToSave(IList<Lancamento> lancamentos)
+        {
+            foreach (Lancamento lancamentoParcela in lancamentos)
+            {
+                _context.Lancamentos.Add(lancamentoParcela);
+            }
+        }
+
+        private IList<Lancamento> CriarLancamentosParcelados(LancamentoCreateRequest lancamentoRequest, int quantidadeParcelaACriar)
+        {
+            IList<Lancamento> lancamentos = new List<Lancamento>();
+
+            for (int i = 0; i < quantidadeParcelaACriar; i++)
+            {
+                lancamentos.Add(LancamentoCreateEntityFactory.CreateOneByRequest(lancamentoRequest));
+            }
+
+            return lancamentos;
         }
     }
 }
